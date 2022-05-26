@@ -8,12 +8,14 @@
 import Foundation
 
 final class RouterDIContainer {
+    private let publicDirectory: String
     
-    init() {
+    init(publicDirectory: String) {
+        self.publicDirectory = publicDirectory
     }
     
     func makeProductsRepository() -> ProductsRepository {
-        return DefaultProductsRepository()
+        return ProductsRepositoryMock(imagesDirectory: publicDirectory + "/images/products/")
     }
     
     func makeProductsUseCase() -> ProductsUseCase {

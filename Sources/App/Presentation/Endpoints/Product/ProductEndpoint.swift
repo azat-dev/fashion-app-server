@@ -24,22 +24,17 @@ class DefaultProductEndpoint: RouteEndpoint {
         else {
             return Response(status: .badRequest, version: .http2)
         }
-//
-        do {
-            let result = try await endpointModel.getData(productId: productId)
+        
+        let responseData = await endpointModel.getData(productId: productId)
 
-            var headers = HTTPHeaders()
-            headers.add(name: "Content-Type", value: result.mime)
-            
-            return Response(
-                status: .ok,
-                version: .http2,
-                headers: headers,
-                body: Response.Body(data: result.data)
-            )
-
-        } catch {
-            return Response(status: .internalServerError)
-        }
+        var headers = HTTPHeaders()
+        headers.add(name: "Content-Type", value: responseData.contentType)
+        
+        return Response(
+            status: responseData.status,
+            version: .http2,
+            headers: headers,
+            body: Response.Body(data: responseData.data)
+        )
     }
 }

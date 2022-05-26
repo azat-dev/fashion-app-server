@@ -10,24 +10,27 @@ import Vapor
 
 public final class ServerApp {
     
-    private let routerDIContainer: RouterDIContainer
     private var env: Environment
     lazy var appConfiguration = AppConfiguration()
     
     public init() {
-        routerDIContainer = RouterDIContainer()
+        
         env = try! Environment.detect()
     }
     
     public func run() {
-        let router = routerDIContainer.makeRouter()
         
         try! LoggingSystem.bootstrap(from: &env)
         let app = Application(env)
         defer { app.shutdown() }
-        
-        router.route(app: app)
         app.http.server.configuration.hostname = appConfiguration.hostName
+        
+        let routerDIContainer = RouterDIContainer(
+            publicDirectory: app.directory.publicDirectory
+        )
+        
+        let router = routerDIContainer.makeRouter()
+        router.route(app: app)
         
         try! app.run()
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Vapor
 
 struct OutputProduct: Encodable {
     var id: String
@@ -18,10 +19,11 @@ struct OutputProduct: Encodable {
 }
 
 protocol ProductEndpointModel {
-    func getData(productId: String) async throws -> (mime: String, data: Data)
+    func getData(productId: String) async -> ResponseData
 }
 
 final class DefaultProductEndpointModel: ProductEndpointModel {
+    
     let productsUseCase: ProductsUseCase
     
     init(productsUseCase: ProductsUseCase) {
@@ -36,12 +38,39 @@ final class DefaultProductEndpointModel: ProductEndpointModel {
         return try! encoder.encode(outputProduct)
     }
     
-    func getData(productId: String) async throws -> (mime: String, data: Data) {
+    func mapError(_ error: ProductsUseCaseError) -> ResponseData {
         
-        let product = try! await productsUseCase.getProduct(productId: productId)
-        return (
-            mime: "application/json",
-            data: try! encodeProduct(product)
-        )
+        switch error {
+        case .internalError:
+            return ResponseData(
+                status: .internalServerError,
+                contentType: "plain/text",
+                data: "InternalError".data(using: .utf8)!
+            )
+            
+        case .productNotFound:
+            return ResponseData(
+                status: .notFound,
+                contentType: "plain/text",
+                data: "NotFound".data(using: .utf8)!
+            )
+        }
+    }
+    
+    func getData(productId: String) async -> ResponseData {
+        
+        let result = try! await productsUseCase.fetchProduct(productId: productId)
+        
+        switch result {
+        case .success(let product):
+            return ResponseData(
+                status: .ok,
+                contentType: "application/json",
+                data: try! encodeProduct(product)
+            )
+            
+        case .failure(let error):
+            return mapError(error)
+        }
     }
 }

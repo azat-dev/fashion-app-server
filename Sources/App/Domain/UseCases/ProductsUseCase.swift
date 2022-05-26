@@ -9,8 +9,13 @@ import Foundation
 
 // MARK: - Protocol
 
+enum ProductsUseCaseError: Error {
+    case productNotFound
+    case internalError
+}
+
 protocol ProductsUseCase {
-    func getProduct(productId: String) async throws -> Product
+    func fetchProduct(productId: String) async throws -> Result<Product, ProductsUseCaseError>
 }
 
 // MARK: - Implementation
@@ -26,7 +31,7 @@ class DefaultProductsUseCase {
 
 extension DefaultProductsUseCase: ProductsUseCase {
     
-    func getProduct(productId: String) async throws -> Product {
-        return try! await productsRepository.fetchProduct(productId: productId)
+    func fetchProduct(productId: String) async -> Result<Product, ProductsUseCaseError>  {
+        return await productsRepository.fetchProduct(productId: productId)
     }
 }

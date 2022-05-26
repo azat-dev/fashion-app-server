@@ -14,6 +14,12 @@ protocol RouteEndpoint {
     func put(_ req: Request) async -> Response
 }
 
+struct ResponseData {
+    let status: HTTPStatus
+    let contentType: String
+    let data: Data
+}
+
 extension RouteEndpoint {
     func get(_ req: Request) async -> Response {
         return Response(
