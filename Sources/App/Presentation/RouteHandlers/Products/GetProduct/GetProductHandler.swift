@@ -8,24 +8,24 @@
 import Foundation
 import Vapor
 
-class ProductEndpoint: RouteEndpoint {
+protocol GetProductHandler: RouteHandler {
 }
 
-class DefaultProductEndpoint: RouteEndpoint {
-    let endpointModel: ProductEndpointModel
+class DefaultGetProductHandler: GetProductHandler {
+    let viewModel: GetProductViewModel
     
-    init(endpointModel: ProductEndpointModel) {
-        self.endpointModel = endpointModel
+    init(viewModel: GetProductViewModel) {
+        self.viewModel = viewModel
     }
     
-    func get(_ req: Request) async -> Response {
+    func execute(_ req: Request) async -> Response {
         guard
             let productId = req.parameters.get("id", as: String.self)
         else {
             return Response(status: .badRequest, version: .http2)
         }
         
-        let responseData = await endpointModel.getData(productId: productId)
+        let responseData = await viewModel.getData(productId: productId)
 
         var headers = HTTPHeaders()
         headers.add(name: "Content-Type", value: responseData.contentType)

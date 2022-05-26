@@ -22,17 +22,21 @@ final class RouterDIContainer {
         return DefaultProductsUseCase(productsRepository: makeProductsRepository())
     }
     
-    func makeProductEndpointModel() -> ProductEndpointModel {
-        return DefaultProductEndpointModel(productsUseCase: makeProductsUseCase())
+    func makeGetProductModel() -> GetProductViewModel {
+        return DefaultGetProductViewModel(productsUseCase: makeProductsUseCase())
     }
     
-    func makeProductEndpoint() -> RouteEndpoint {
-        return DefaultProductEndpoint(endpointModel: makeProductEndpointModel())
+    func makeGetProductRouteHandler() -> RouteHandler {
+        return DefaultGetProductHandler(viewModel: makeGetProductModel())
     }
     
     func makeRouter() -> Router {
-        let routes: [RouteConfiguration] = [
-            .init(path: "/products/:id", endpoint: makeProductEndpoint())
+        let routes = [
+            RouteConfiguration(
+                path: "/products/:id",
+                method: .GET,
+                handler: makeGetProductRouteHandler()
+            )
         ]
         
         let config = RouterConfiguration(routes: routes)

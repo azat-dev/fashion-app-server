@@ -6,23 +6,30 @@
 //
 
 import Foundation
-import Vapor
 
 struct OutputProduct: Encodable {
     var id: String
     var name: String
+    var brand: String
+    var price: Double
+    var image: String
+    var description: String
     
     init(product: Product) {
         id = product.id
         name = product.name
+        brand = product.brand'
+        image = product.image
+        price = product.price
+        description = product.description
     }
 }
 
-protocol ProductEndpointModel {
-    func getData(productId: String) async -> ResponseData
+protocol GetProductViewModel {
+    func getData(productId: String) async -> RouteHandlerResponse
 }
 
-final class DefaultProductEndpointModel: ProductEndpointModel {
+final class DefaultGetProductViewModel: GetProductViewModel {
     
     let productsUseCase: ProductsUseCase
     
@@ -34,22 +41,23 @@ final class DefaultProductEndpointModel: ProductEndpointModel {
         
         let outputProduct = OutputProduct(product: product)
         let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
         
         return try! encoder.encode(outputProduct)
     }
     
-    func mapError(_ error: ProductsUseCaseError) -> ResponseData {
+    func mapError(_ error: ProductsUseCaseError) -> RouteHandlerResponse {
         
         switch error {
         case .internalError:
-            return ResponseData(
+            return RouteHandlerResponse(
                 status: .internalServerError,
                 contentType: "plain/text",
                 data: "InternalError".data(using: .utf8)!
             )
             
         case .productNotFound:
-            return ResponseData(
+            return RouteHandlerResponse(
                 status: .notFound,
                 contentType: "plain/text",
                 data: "NotFound".data(using: .utf8)!
@@ -57,13 +65,13 @@ final class DefaultProductEndpointModel: ProductEndpointModel {
         }
     }
     
-    func getData(productId: String) async -> ResponseData {
+    func getData(productId: String) async -> RouteHandlerResponse {
         
         let result = try! await productsUseCase.fetchProduct(productId: productId)
         
         switch result {
         case .success(let product):
-            return ResponseData(
+            return RouteHandlerResponse(
                 status: .ok,
                 contentType: "application/json",
                 data: try! encodeProduct(product)

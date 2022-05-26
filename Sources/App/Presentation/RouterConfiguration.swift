@@ -10,7 +10,8 @@ import Vapor
 
 struct RouteConfiguration {
     var path: String
-    var endpoint: RouteEndpoint
+    var method: HTTPMethod
+    var handler: RouteHandler
 }
 
 struct RouterConfiguration {
@@ -34,9 +35,7 @@ class Router {
             
             let path = route.path.pathComponents
             
-            app.get(path, use: route.endpoint.get)
-            app.post(path, use: route.endpoint.post)
-            app.put(path, use: route.endpoint.put)
+            app.on(route.method, path, use: route.handler.execute)
         }
     }
 }
