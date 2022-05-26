@@ -17,8 +17,12 @@ protocol SortParams {
     var direction: SortDirection { get }
 }
 
+struct FetchProductsQuery {
+    var from: UInt
+    var limit: UInt
+}
 
 protocol ProductsRepository {
     func fetchProduct(productId: String) async -> Result<Product, ProductsUseCaseError>
-    func searchProducts(sort: [SortParams]) async throws -> ProductsPage
+    func fetchProducts(with: FetchProductsQuery) async -> Result<ProductsPage, ProductsUseCaseError>
 }

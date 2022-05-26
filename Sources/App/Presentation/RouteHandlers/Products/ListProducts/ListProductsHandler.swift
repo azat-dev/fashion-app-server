@@ -11,6 +11,11 @@ import Vapor
 protocol ListProductsHandler: RouteHandler {
 }
 
+struct ListProductsQueryParams: Content {
+    var from: UInt
+    var limit: UInt
+}
+
 class DefaultListProductsHandler: ListProductsHandler {
     let viewModel: ListProductsViewModel
     
@@ -21,8 +26,7 @@ class DefaultListProductsHandler: ListProductsHandler {
     func execute(_ req: Request) async -> Response {
         
         guard
-            let from = req.parameters.get("from", as: Int.self),
-            let limit = req.parameters.get("limit", as: Int.self)
+            let queryParams = try? req.query.decode(ListProductsQueryParams.self)
         else {
             return Response(
                 status: .badRequest,
@@ -30,7 +34,7 @@ class DefaultListProductsHandler: ListProductsHandler {
             )
         }
         
-        let result = await viewModel.getData(from: from, limit: limit)
+        let result = await viewModel.getData(from: queryParams.from, limit: queryParams.limit)
         
         var headers = HTTPHeaders()
         headers.add(name: "Content-Type", value: result.contentType)

@@ -29,8 +29,24 @@ extension ProductsRepositoryMock: ProductsRepository {
         return .success(product)
     }
     
-    func searchProducts(sort: [SortParams]) async throws -> ProductsPage {
-        fatalError("Not implemented")
+    func fetchProducts(with query: FetchProductsQuery) async -> Result<ProductsPage, ProductsUseCaseError> {
+        
+        var filteredItems = [Product]()
+        
+        let start = Int(query.from)
+        let end = min(Int(query.from + query.limit), Int(products.count))
+        
+        for index in start..<end {
+            let product = products[index]
+            filteredItems.append(product)
+        }
+        
+        let pageData = ProductsPage(
+            total: products.count,
+            items: filteredItems
+        )
+        
+        return .success(pageData)
     }
 }
 

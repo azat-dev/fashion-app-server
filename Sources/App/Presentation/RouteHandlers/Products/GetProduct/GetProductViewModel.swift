@@ -18,7 +18,7 @@ struct OutputProduct: Encodable {
     init(product: Product) {
         id = product.id
         name = product.name
-        brand = product.brand'
+        brand = product.brand
         image = product.image
         price = product.price
         description = product.description

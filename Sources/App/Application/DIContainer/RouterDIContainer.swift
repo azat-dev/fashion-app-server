@@ -30,12 +30,26 @@ final class RouterDIContainer {
         return DefaultGetProductHandler(viewModel: makeGetProductModel())
     }
     
+    func makeListProductsModel() -> ListProductsViewModel {
+        return DefaultListProductsViewModel(productsUseCase: makeProductsUseCase())
+    }
+    
+    func makeListProductsHandler() -> RouteHandler {
+        return DefaultListProductsHandler(viewModel: makeListProductsModel())
+    }
+    
     func makeRouter() -> Router {
         let routes = [
             RouteConfiguration(
                 path: "/products/:id",
                 method: .GET,
                 handler: makeGetProductRouteHandler()
+            ),
+            
+            RouteConfiguration(
+                path: "/products",
+                method: .GET,
+                handler: makeListProductsHandler()
             )
         ]
         
