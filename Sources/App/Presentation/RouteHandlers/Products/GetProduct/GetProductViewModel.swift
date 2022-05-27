@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OutputProduct: Encodable {
+struct OutputProduct: Codable {
     var id: String
     var name: String
     var brand: String
@@ -67,7 +67,7 @@ final class DefaultGetProductViewModel: GetProductViewModel {
     
     func getData(productId: String) async -> RouteHandlerResponse {
         
-        let result = try! await productsUseCase.fetchProduct(productId: productId)
+        let result = await productsUseCase.fetchProduct(productId: productId)
         
         switch result {
         case .success(let product):

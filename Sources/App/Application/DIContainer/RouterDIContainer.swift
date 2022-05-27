@@ -50,6 +50,22 @@ final class RouterDIContainer {
         return DefaultGetFileHandler(viewModel: makeGetImageHandler())
     }
     
+    func makeCartRepository() -> CartRepository {
+        return CartRepositoryMock()
+    }
+    
+    func makeCartUseCase() -> CartUseCase {
+        return DefaultCartUseCase(cartRepository: makeCartRepository())
+    }
+    
+    func makeGetCartViewModel() -> GetCartViewModel {
+        return DefaultGetCartViewModel(cartUseCase: makeCartUseCase())
+    }
+    
+    func makeGetCartHandler() -> GetCartHandler {
+        return DefaultGetCartHandler(viewModel: makeGetCartViewModel())
+    }
+    
     func makeRouter() -> Router {
         let routes = [
             RouteConfiguration(
@@ -68,6 +84,12 @@ final class RouterDIContainer {
                 path: "/images/**",
                 method: .GET,
                 handler: makeGetImageRouteHandler()
+            ),
+            
+            RouteConfiguration(
+                path: "/cart",
+                method: .GET,
+                handler: makeGetCartHandler()
             )
         ]
         
