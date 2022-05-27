@@ -38,6 +38,18 @@ final class RouterDIContainer {
         return DefaultListProductsHandler(viewModel: makeListProductsModel())
     }
     
+    func makeImagesFilesUseCase() -> FilesUseCase {
+        return DefaultFilesUseCase(rootDirectory: "\(publicDirectory)/images")
+    }
+    
+    func makeGetImageHandler() -> GetFileViewModel {
+        return DefaultGetFileViewModel(filesUseCase: makeImagesFilesUseCase())
+    }
+    
+    func makeGetImageRouteHandler() -> RouteHandler {
+        return DefaultGetFileHandler(viewModel: makeGetImageHandler())
+    }
+    
     func makeRouter() -> Router {
         let routes = [
             RouteConfiguration(
@@ -50,6 +62,12 @@ final class RouterDIContainer {
                 path: "/products",
                 method: .GET,
                 handler: makeListProductsHandler()
+            ),
+            
+            RouteConfiguration(
+                path: "/images/**",
+                method: .GET,
+                handler: makeGetImageRouteHandler()
             )
         ]
         

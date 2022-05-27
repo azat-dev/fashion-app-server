@@ -29,12 +29,8 @@ class Router {
     func route(app: Application) {
         
         for route in configuration.routes {
-            app.get("") { req in
-                return Response(status: .ok)
-            }
             
             let path = route.path.pathComponents
-            
             app.on(route.method, path, use: route.handler.execute)
         }
     }
