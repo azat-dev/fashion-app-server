@@ -10,14 +10,14 @@ import XCTest
 
 class GetCartViewModelTests: XCTestCase {
 
-    var viewModel: GetCartViewModel!
+    var viewModel: GetCartHandlerModel!
     var cartRepository: CartRepositoryMock!
 
     override func setUpWithError() throws {
 
         cartRepository = CartRepositoryMock()
         let cartUseCase = DefaultCartUseCase(cartRepository: cartRepository)
-        viewModel = DefaultGetCartViewModel(cartUseCase: cartUseCase)
+        viewModel = DefaultGetCartHandlerModel(cartUseCase: cartUseCase)
     }
 
     func test_getData_success() async {

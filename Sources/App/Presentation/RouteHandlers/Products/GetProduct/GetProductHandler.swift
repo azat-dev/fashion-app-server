@@ -8,10 +8,14 @@
 import Foundation
 import Vapor
 
+// MARK: - Interfaces
+
 protocol GetProductHandler: RouteHandler {
 }
 
-class DefaultGetProductHandler: GetProductHandler {
+// MARK: - Implementations
+
+final class DefaultGetProductHandler: GetProductHandler {
     let viewModel: GetProductViewModel
     
     init(viewModel: GetProductViewModel) {

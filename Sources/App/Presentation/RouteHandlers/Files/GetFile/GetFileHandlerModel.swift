@@ -14,11 +14,11 @@ struct GetFileResponseData {
     var fileAbsolutePath: String?
 }
 
-protocol GetFileViewModel {
+protocol GetFileHandlerModel {
     func getFile(path: String) async -> GetFileResponseData
 }
 
-final class DefaultGetFileViewModel: GetFileViewModel {
+final class DefaultGetFileHandlerModel: GetFileHandlerModel {
     
     private let filesUseCase: FilesUseCase
     

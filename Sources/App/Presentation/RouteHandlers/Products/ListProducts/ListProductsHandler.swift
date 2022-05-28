@@ -8,6 +8,8 @@
 import Foundation
 import Vapor
 
+// MARK: - Interfaces
+
 protocol ListProductsHandler: RouteHandler {
 }
 
@@ -16,10 +18,12 @@ struct ListProductsQueryParams: Content {
     var limit: UInt
 }
 
-class DefaultListProductsHandler: ListProductsHandler {
-    let viewModel: ListProductsViewModel
+// MARK: - Implementations
+
+final class DefaultListProductsHandler: ListProductsHandler {
+    let viewModel: ListProductsHandlerModel
     
-    init(viewModel: ListProductsViewModel) {
+    init(viewModel: ListProductsHandlerModel) {
         self.viewModel = viewModel
     }
     

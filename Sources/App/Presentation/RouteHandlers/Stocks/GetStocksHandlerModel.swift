@@ -11,14 +11,14 @@ import Foundation
 
 typealias OutputStocks = [String: Int]
 
-protocol GetStocksViewModel {
+protocol GetStocksHandlerModel {
     func getData(productsIds: [String]) async -> RouteHandlerResponse
 }
 
 
 // MARK: - Implementation
 
-class DefaultGetStocksViewModel {
+class DefaultGetStocksHandlerModel {
     
     private let stocksUseCase: StocksUseCase
 
@@ -27,7 +27,7 @@ class DefaultGetStocksViewModel {
     }
 }
 
-extension DefaultGetStocksViewModel: GetStocksViewModel {
+extension DefaultGetStocksHandlerModel: GetStocksHandlerModel {
     
     func getData(productsIds: [String]) async -> RouteHandlerResponse {
         

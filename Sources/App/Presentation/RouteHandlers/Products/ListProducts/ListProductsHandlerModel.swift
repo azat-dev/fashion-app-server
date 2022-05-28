@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Interfaces
+
 struct OutputPage: Encodable {
     var total: Int
     var items: [OutputProduct]
@@ -17,11 +19,13 @@ struct OutputPage: Encodable {
     }
 }
 
-protocol ListProductsViewModel {
+protocol ListProductsHandlerModel {
     func getData(from: UInt, limit: UInt) async -> RouteHandlerResponse
 }
 
-final class DefaultListProductsViewModel: ListProductsViewModel {
+// MARK: - Implementations
+
+final class DefaultListProductsHandlerModel: ListProductsHandlerModel {
     let productsUseCase: ProductsUseCase
     
     init(productsUseCase: ProductsUseCase) {

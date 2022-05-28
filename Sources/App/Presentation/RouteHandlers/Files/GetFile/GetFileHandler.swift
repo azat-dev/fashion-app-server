@@ -8,14 +8,18 @@
 import Foundation
 import Vapor
 
+// MARK: - Interfaces
+
 protocol GetFileHandler: RouteHandler {
 }
 
+// MARK: - Implementations
+
 final class DefaultGetFileHandler: GetFileHandler {
     
-    private let viewModel: GetFileViewModel
+    private let viewModel: GetFileHandlerModel
     
-    init(viewModel: GetFileViewModel) {
+    init(viewModel: GetFileHandlerModel) {
         self.viewModel = viewModel
     }
     

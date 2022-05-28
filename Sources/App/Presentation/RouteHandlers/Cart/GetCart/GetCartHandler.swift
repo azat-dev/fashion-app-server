@@ -8,14 +8,18 @@
 import Foundation
 import Vapor
 
+// MARK: - Interfaces
+
 protocol GetCartHandler : RouteHandler {
 }
 
+// MARK: - Implementations
+
 final class DefaultGetCartHandler: GetCartHandler {
     
-    private let viewModel: GetCartViewModel
+    private let viewModel: GetCartHandlerModel
     
-    init(viewModel: GetCartViewModel) {
+    init(viewModel: GetCartHandlerModel) {
         
         self.viewModel = viewModel
     }

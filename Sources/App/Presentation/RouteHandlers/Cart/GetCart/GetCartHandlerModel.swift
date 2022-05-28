@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Interfaces
+
 struct OutputCartItem: Codable {
     var product: OutputProduct
     var amount: Int
@@ -25,11 +27,13 @@ struct OutputCart: Codable {
     }
 }
 
-protocol GetCartViewModel {
+protocol GetCartHandlerModel {
     func getData(userId: String) async -> RouteHandlerResponse
 }
 
-final class DefaultGetCartViewModel: GetCartViewModel {
+// MARK: - Implementations
+
+final class DefaultGetCartHandlerModel: GetCartHandlerModel {
     
     private let cartUseCase: CartUseCase
     

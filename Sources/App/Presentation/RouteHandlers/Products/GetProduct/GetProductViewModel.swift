@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Interfaces
+
 struct OutputProduct: Codable {
     var id: String
     var name: String
@@ -28,6 +30,8 @@ struct OutputProduct: Codable {
 protocol GetProductViewModel {
     func getData(productId: String) async -> RouteHandlerResponse
 }
+
+// MARK: - Implementations
 
 final class DefaultGetProductViewModel: GetProductViewModel {
     

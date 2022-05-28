@@ -15,13 +15,13 @@ class GetStocksViewModelTests: XCTestCase {
     
     var stocksRepository: StocksRepositoryMock!
     var stocksUseCase: StocksUseCase!
-    var getStocksViewModel: GetStocksViewModel!
+    var getStocksViewModel: GetStocksHandlerModel!
     
     override func setUpWithError() throws {
         
         stocksRepository = StocksRepositoryMock()
         stocksUseCase = DefaultStocksUseCase(stocksRepository: stocksRepository)
-        getStocksViewModel = DefaultGetStocksViewModel(stocksUseCase: stocksUseCase)
+        getStocksViewModel = DefaultGetStocksHandlerModel(stocksUseCase: stocksUseCase)
     }
     
     func test_get_data() async {
