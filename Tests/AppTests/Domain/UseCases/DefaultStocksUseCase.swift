@@ -34,7 +34,12 @@ class DefaultStocksUseCaseTests: XCTestCase {
             let amount = Int.random(in: 0...10000) * sign
             
             referenceStocks[productId] = referenceStocks[productId, default: 0] + amount
-            await stocksUseCase.addStocksChange(productId: productId, value: amount)
+            let result = await stocksUseCase.addStocksChange(productId: productId, value: amount)
+            
+            guard case .success() = result else {
+                XCTAssertFalse(true)
+                return
+            }
         }
         
         let result = await stocksUseCase.fetchCurrentStocks(productId: Array(productIds))
