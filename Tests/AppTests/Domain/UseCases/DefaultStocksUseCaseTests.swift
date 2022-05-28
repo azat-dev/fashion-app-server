@@ -73,7 +73,7 @@ class DefaultStocksUseCaseTests: XCTestCase {
         }
         
         XCTAssertEqual(stocks.count, 1)
-        XCTAssertEqual(stocks["product_0"], 10)
+        XCTAssertEqual(stocks["product_0"], 0)
     }
     
     func test_get_stocks_for_zero_products() async {

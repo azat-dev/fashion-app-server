@@ -28,13 +28,29 @@ class StocksRepositoryMock: StocksRepository {
         return .success(())
     }
     
-    func fetchCurrentStocks(productId: [String]) async -> Result<[String: Int], StocksUseCaseError> {
+    func fetchCurrentStocks(productId productsIds: [String]) async -> Result<[String: Int], StocksUseCaseError> {
         
         var result = [String: Int]()
         
-        stocks.forEach { stock in
+        result = stocks.reduce([:]) { partialResult, stock in
+            
             let productId = stock.productId
-            result[productId] = result[productId, default: 0] + stock.amount
+            
+            guard productsIds.contains(productId) else {
+                return partialResult
+            }
+                
+            var newResult = partialResult
+            
+            newResult[productId] = partialResult[productId, default: 0] + stock.amount
+            return newResult
+        }
+        
+        for productId in productsIds {
+            
+            if result[productId] == nil {
+                result[productId] = 0
+            }
         }
         
         return .success(result)
