@@ -13,9 +13,9 @@ import XCTest
 
 class GetStocksViewModelTests: XCTestCase {
     
-    let stocksRepository: StocksRepositoryMock!
-    let stocksUseCase: StocksUseCase!
-    let getStocksViewModel: GetStocksViewModel!
+    var stocksRepository: StocksRepositoryMock!
+    var stocksUseCase: StocksUseCase!
+    var getStocksViewModel: GetStocksViewModel!
     
     override func setUpWithError() throws {
         
@@ -35,7 +35,7 @@ class GetStocksViewModelTests: XCTestCase {
             return
         }
         
-        let response = await getStocksViewModel.getData(productIds: [testProductId])
+        let response = await getStocksViewModel.getData(productsIds: [testProductId])
 
         XCTAssertEqual(response.status, .ok)
         XCTAssertNotNil(response.data)
@@ -43,7 +43,10 @@ class GetStocksViewModelTests: XCTestCase {
         let decoder = JSONDecoder()
         let parsedResponse = try? decoder.decode(OutputStocks.self, from: response.data)
         
-        XCTAssertNotNil(parsedResponse)
+        guard let parsedResponse = parsedResponse else {
+            XCTAssertNotNil(parsedResponse)
+            return
+        }
         
         XCTAssertEqual(parsedResponse.count, 1)
         XCTAssertEqual(parsedResponse[testProductId], testStock)
