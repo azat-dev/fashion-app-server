@@ -9,19 +9,19 @@
 import XCTest
 
 class GetCartViewModelTests: XCTestCase {
-    
+
     var viewModel: GetCartViewModel!
     var cartRepository: CartRepositoryMock!
-    
+
     override func setUpWithError() throws {
-        
+
         cartRepository = CartRepositoryMock()
         let cartUseCase = DefaultCartUseCase(cartRepository: cartRepository)
         viewModel = DefaultGetCartViewModel(cartUseCase: cartUseCase)
     }
-    
+
     func test_getData_success() async {
-        
+
         let testProduct = Product(
             id: "test_id \(Date.now)",
             name: "test_name",
@@ -30,7 +30,7 @@ class GetCartViewModelTests: XCTestCase {
             image: "",
             price: 10
         )
-        
+
         let testCart = Cart(
             items: [
                 CartItem(
@@ -40,16 +40,16 @@ class GetCartViewModelTests: XCTestCase {
                 )
             ]
         )
-        
+
         let _ = await cartRepository.putCart(userId: "test", data: testCart)
         let responseData = await viewModel.getData(userId: "test")
-        
+
         XCTAssertEqual(responseData.status, .ok)
-        
+
         let decoder = JSONDecoder()
-        
+
         let parsedCart = try! decoder.decode(OutputCart.self, from: responseData.data)
-        
+
         XCTAssertEqual(parsedCart.items.count, testCart.items.count)
         XCTAssertEqual(parsedCart.items.first?.product.id, testCart.items.first?.product.id)
     }
