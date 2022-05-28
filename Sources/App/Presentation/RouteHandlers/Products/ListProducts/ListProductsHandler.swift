@@ -21,10 +21,10 @@ struct ListProductsQueryParams: Content {
 // MARK: - Implementations
 
 final class DefaultListProductsHandler: ListProductsHandler {
-    let viewModel: ListProductsHandlerModel
+    let handlerModel: ListProductsHandlerModel
     
-    init(viewModel: ListProductsHandlerModel) {
-        self.viewModel = viewModel
+    init(handlerModel: ListProductsHandlerModel) {
+        self.handlerModel = handlerModel
     }
     
     func execute(_ req: Request) async -> Response {
@@ -38,7 +38,7 @@ final class DefaultListProductsHandler: ListProductsHandler {
             )
         }
         
-        let result = await viewModel.getData(from: queryParams.from, limit: queryParams.limit)
+        let result = await handlerModel.getData(from: queryParams.from, limit: queryParams.limit)
         
         var headers = HTTPHeaders()
         headers.add(name: "Content-Type", value: result.contentType)

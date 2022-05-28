@@ -17,16 +17,16 @@ protocol GetCartHandler : RouteHandler {
 
 final class DefaultGetCartHandler: GetCartHandler {
     
-    private let viewModel: GetCartHandlerModel
+    private let handlerModel: GetCartHandlerModel
     
-    init(viewModel: GetCartHandlerModel) {
+    init(handlerModel: GetCartHandlerModel) {
         
-        self.viewModel = viewModel
+        self.handlerModel = handlerModel
     }
 
     func execute(_ request: Request) async -> Response {
         
-        let responseData = await viewModel.getData(userId: "1")
+        let responseData = await handlerModel.getData(userId: "1")
         
         var headers = HTTPHeaders()
         headers.add(name: .contentType, value: responseData.contentType)

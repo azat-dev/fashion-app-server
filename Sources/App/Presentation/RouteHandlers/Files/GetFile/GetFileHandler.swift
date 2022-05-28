@@ -17,10 +17,10 @@ protocol GetFileHandler: RouteHandler {
 
 final class DefaultGetFileHandler: GetFileHandler {
     
-    private let viewModel: GetFileHandlerModel
+    private let handlerModel: GetFileHandlerModel
     
-    init(viewModel: GetFileHandlerModel) {
-        self.viewModel = viewModel
+    init(handlerModel: GetFileHandlerModel) {
+        self.handlerModel = handlerModel
     }
     
     func splitFilePath(requestPath: String, routeComponents: [PathComponent]) -> String? {
@@ -53,7 +53,7 @@ final class DefaultGetFileHandler: GetFileHandler {
             return Response(status: .internalServerError)
         }
         
-        let responseData = await self.viewModel.getFile(path: filePath)
+        let responseData = await self.handlerModel.getFile(path: filePath)
         
         guard let absolutePath = responseData.fileAbsolutePath else {
             return Response(

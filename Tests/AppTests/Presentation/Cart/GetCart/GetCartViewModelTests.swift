@@ -8,16 +8,16 @@
 @testable import App
 import XCTest
 
-class GetCartViewModelTests: XCTestCase {
+class GetCartHandlerModelTests: XCTestCase {
 
-    var viewModel: GetCartHandlerModel!
+    var handlerModel: GetCartHandlerModel!
     var cartRepository: CartRepositoryMock!
 
     override func setUpWithError() throws {
 
         cartRepository = CartRepositoryMock()
         let cartUseCase = DefaultCartUseCase(cartRepository: cartRepository)
-        viewModel = DefaultGetCartHandlerModel(cartUseCase: cartUseCase)
+        handlerModel = DefaultGetCartHandlerModel(cartUseCase: cartUseCase)
     }
 
     func test_getData_success() async {
@@ -42,7 +42,7 @@ class GetCartViewModelTests: XCTestCase {
         )
 
         let _ = await cartRepository.putCart(userId: "test", data: testCart)
-        let responseData = await viewModel.getData(userId: "test")
+        let responseData = await handlerModel.getData(userId: "test")
 
         XCTAssertEqual(responseData.status, .ok)
 

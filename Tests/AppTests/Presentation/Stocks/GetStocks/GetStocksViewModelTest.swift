@@ -11,17 +11,17 @@ import XCTest
 
 @testable import App
 
-class GetStocksViewModelTests: XCTestCase {
+class GetStocksHandlerModelTests: XCTestCase {
     
     var stocksRepository: StocksRepositoryMock!
     var stocksUseCase: StocksUseCase!
-    var getStocksViewModel: GetStocksHandlerModel!
+    var getStocksHandlerModel: GetStocksHandlerModel!
     
     override func setUpWithError() throws {
         
         stocksRepository = StocksRepositoryMock()
         stocksUseCase = DefaultStocksUseCase(stocksRepository: stocksRepository)
-        getStocksViewModel = DefaultGetStocksHandlerModel(stocksUseCase: stocksUseCase)
+        getStocksHandlerModel = DefaultGetStocksHandlerModel(stocksUseCase: stocksUseCase)
     }
     
     func test_get_data() async {
@@ -35,7 +35,7 @@ class GetStocksViewModelTests: XCTestCase {
             return
         }
         
-        let response = await getStocksViewModel.getData(productsIds: [testProductId])
+        let response = await getStocksHandlerModel.getData(productsIds: [testProductId])
 
         XCTAssertEqual(response.status, .ok)
         XCTAssertNotNil(response.data)

@@ -27,13 +27,13 @@ struct OutputProduct: Codable {
     }
 }
 
-protocol GetProductViewModel {
+protocol GetProductHandlerModel {
     func getData(productId: String) async -> RouteHandlerResponse
 }
 
 // MARK: - Implementations
 
-final class DefaultGetProductViewModel: GetProductViewModel {
+final class DefaultGetProductHandlerModel: GetProductHandlerModel {
     
     let productsUseCase: ProductsUseCase
     

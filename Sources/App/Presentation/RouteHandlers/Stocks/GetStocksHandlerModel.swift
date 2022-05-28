@@ -18,7 +18,7 @@ protocol GetStocksHandlerModel {
 
 // MARK: - Implementation
 
-class DefaultGetStocksHandlerModel {
+final class DefaultGetStocksHandlerModel {
     
     private let stocksUseCase: StocksUseCase
 

@@ -22,12 +22,12 @@ final class RouterDIContainer {
         return DefaultProductsUseCase(productsRepository: makeProductsRepository())
     }
     
-    func makeGetProductModel() -> GetProductViewModel {
-        return DefaultGetProductViewModel(productsUseCase: makeProductsUseCase())
+    func makeGetProductModel() -> GetProductHandlerModel {
+        return DefaultGetProductHandlerModel(productsUseCase: makeProductsUseCase())
     }
     
     func makeGetProductRouteHandler() -> RouteHandler {
-        return DefaultGetProductHandler(viewModel: makeGetProductModel())
+        return DefaultGetProductHandler(handlerModel: makeGetProductModel())
     }
     
     func makeListProductsModel() -> ListProductsHandlerModel {
@@ -35,7 +35,7 @@ final class RouterDIContainer {
     }
     
     func makeListProductsHandler() -> RouteHandler {
-        return DefaultListProductsHandler(viewModel: makeListProductsModel())
+        return DefaultListProductsHandler(handlerModel: makeListProductsModel())
     }
     
     func makeImagesFilesUseCase() -> FilesUseCase {
@@ -47,7 +47,7 @@ final class RouterDIContainer {
     }
     
     func makeGetImageRouteHandler() -> RouteHandler {
-        return DefaultGetFileHandler(viewModel: makeGetImageHandler())
+        return DefaultGetFileHandler(handlerModel: makeGetImageHandler())
     }
     
     func makeCartRepository() -> CartRepository {
@@ -58,12 +58,12 @@ final class RouterDIContainer {
         return DefaultCartUseCase(cartRepository: makeCartRepository())
     }
     
-    func makeGetCartViewModel() -> GetCartHandlerModel {
+    func makeGetCartHandlerModel() -> GetCartHandlerModel {
         return DefaultGetCartHandlerModel(cartUseCase: makeCartUseCase())
     }
     
     func makeGetCartHandler() -> GetCartHandler {
-        return DefaultGetCartHandler(viewModel: makeGetCartViewModel())
+        return DefaultGetCartHandler(handlerModel: makeGetCartHandlerModel())
     }
     
     func makeRouter() -> Router {

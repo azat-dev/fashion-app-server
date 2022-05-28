@@ -16,10 +16,10 @@ protocol GetProductHandler: RouteHandler {
 // MARK: - Implementations
 
 final class DefaultGetProductHandler: GetProductHandler {
-    let viewModel: GetProductViewModel
+    let handlerModel: GetProductHandlerModel
     
-    init(viewModel: GetProductViewModel) {
-        self.viewModel = viewModel
+    init(handlerModel: GetProductHandlerModel) {
+        self.handlerModel = handlerModel
     }
     
     func execute(_ req: Request) async -> Response {
@@ -29,7 +29,7 @@ final class DefaultGetProductHandler: GetProductHandler {
             return Response(status: .badRequest, version: .http2)
         }
         
-        let responseData = await viewModel.getData(productId: productId)
+        let responseData = await handlerModel.getData(productId: productId)
 
         var headers = HTTPHeaders()
         headers.add(name: "Content-Type", value: responseData.contentType)
