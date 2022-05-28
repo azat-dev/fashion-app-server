@@ -11,18 +11,15 @@ import Vapor
 public final class ServerApp {
     
     private var env: Environment
-    lazy var appConfiguration = AppConfiguration()
+    public var app: Application
+    private lazy var appConfiguration = AppConfiguration()
     
     public init() {
         
         env = try! Environment.detect()
-    }
-    
-    public func run() {
-        
         try! LoggingSystem.bootstrap(from: &env)
-        let app = Application(env)
-        defer { app.shutdown() }
+    
+        app = Application(env)
         app.http.server.configuration.hostname = appConfiguration.hostName
         
         let routerDIContainer = RouterDIContainer(
@@ -31,6 +28,14 @@ public final class ServerApp {
         
         let router = routerDIContainer.makeRouter()
         router.route(app: app)
+    }
+    
+    public func shutdown() {
+        app.shutdown()
+    }
+    
+    public func run() {
+        defer { shutdown() }
         
         try! app.run()
     }
