@@ -53,7 +53,30 @@ class DefaultStocksUseCaseTests: XCTestCase {
         XCTAssertEqual(stocks, referenceStocks)
     }
     
-    func test_not_existing_stock() async {
+    func test_return_only_requested_stocks() async {
+        
+        for index in 0...10 {
+            let productId = "product_\(index)"
+            let result = await stocksUseCase.addStocksChange(productId: productId, value: index)
+            
+            guard case .success() = result else {
+                XCTAssertFalse(true, "Can't add stock")
+                return
+            }
+        }
+        
+        let result = await stocksUseCase.fetchCurrentStocks(productId: ["product_0"])
+        
+        guard case .success(let stocks) = result else {
+            XCTAssertFalse(true)
+            return
+        }
+        
+        XCTAssertEqual(stocks.count, 1)
+        XCTAssertEqual(stocks["product_0"], 10)
+    }
+    
+    func test_return_0_for_not_existing_stock() async {
         
         let productsIds = ["test1", "test2", "test3"]
         
