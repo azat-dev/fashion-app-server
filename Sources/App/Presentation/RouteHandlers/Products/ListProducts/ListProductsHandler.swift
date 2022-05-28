@@ -41,7 +41,7 @@ final class DefaultListProductsHandler: ListProductsHandler {
         let result = await handlerModel.getData(from: queryParams.from, limit: queryParams.limit)
         
         var headers = HTTPHeaders()
-        headers.add(name: "Content-Type", value: result.contentType)
+        headers.add(name: .contentType, value: result.contentType)
         
         return Response(
             status: result.status,

@@ -32,7 +32,7 @@ final class DefaultGetProductHandler: GetProductHandler {
         let responseData = await handlerModel.getData(productId: productId)
 
         var headers = HTTPHeaders()
-        headers.add(name: "Content-Type", value: responseData.contentType)
+        headers.add(name: .contentType, value: responseData.contentType)
         
         return Response(
             status: responseData.status,
