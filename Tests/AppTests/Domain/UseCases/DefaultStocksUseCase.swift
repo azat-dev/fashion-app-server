@@ -7,6 +7,7 @@
 
 @testable import App
 import Foundation
+import XCTest
 
 class DefaultStocksUseCaseTests: XCTestCase {
     
@@ -16,23 +17,33 @@ class DefaultStocksUseCaseTests: XCTestCase {
     override func setUpWithError() throws {
         
         stocksRepository = StocksRepositoryMock()
-        stocksUseCase = DefaultStocksUseCase(cartRepository: stocksRepository)
+        stocksUseCase = DefaultStocksUseCase(stocksRepository: stocksRepository)
     }
     
     func test_stocks_change() async {
         
         var referenceStocks = [String: Int]()
+        var productIds = Set<String>()
         
         for index in 0...100 {
             
             let sign = index % 2 == 0 ? 1 : -1
             let productId = "test_product_\(index % 3)"
-            let amount = Int.random(in: 0...10000)
+            productIds.insert(productId)
             
-            await stocksUseCase.addStockChange(productId: productId, value: amount * sign)
+            let amount = Int.random(in: 0...10000) * sign
+            
+            referenceStocks[productId] = referenceStocks[productId, default: 0] + amount
+            await stocksUseCase.addStocksChange(productId: productId, value: amount)
         }
         
-        let stocks = await stocksUseCase.fetchCurrentStocks(products: [productId])
+        let result = await stocksUseCase.fetchCurrentStocks(productId: Array(productIds))
+        
+        guard case .success(let stocks) = result else {
+            XCTAssertFalse(true)
+            return
+        }
+        
         XCTAssertEqual(stocks.count, referenceStocks.count)
         XCTAssertEqual(stocks, referenceStocks)
     }
